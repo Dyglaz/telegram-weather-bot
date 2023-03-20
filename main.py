@@ -5,14 +5,13 @@ import requests
 import matplotlib.pyplot as plt
 
 
-# Define a few command handlers. These usually take the two arguments update and
-# context.
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
     user = update.effective_user
-    await update.message.reply_html(
-        rf"Hi {user.mention_html()}!",
-        reply_markup=ForceReply(selective=True),
+    await update.message.reply_text(
+        f"Hi, {user.username}!\n"
+        "This bot can help you to know weather in your city\n"
+        "You can write /help to see available commands"
     )
 
 
