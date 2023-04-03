@@ -1,0 +1,7 @@
+weather\_utils module
+=====================
+
+.. automodule:: weather_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

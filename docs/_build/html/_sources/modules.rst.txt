@@ -1,0 +1,11 @@
+Проект
+======
+
+.. toctree::
+   :maxdepth: 4
+
+   config
+   config_example
+   main
+   setup
+   weather_utils
