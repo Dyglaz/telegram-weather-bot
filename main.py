@@ -1,8 +1,6 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
-from datetime import datetime
-import requests
-import matplotlib.pyplot as plt
+
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -22,15 +20,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
            "/draw_temp - get a temperature graph in specified city\n" \
            "/get_weather - get current weather in specified city"
     await update.message.reply_text(text)
-
-
-# Function to get weather data for a specified city
-def get_weather_data(city):
-    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid=11f616aaccfbd3abcdac1210710f9092&' \
-          f'units=metric&lang=ru'
-    response = requests.get(url)
-    data = response.json()
-    return data
 
 
 # Function to send weather data to the user
