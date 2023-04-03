@@ -1,4 +1,4 @@
-from telegram import ForceReply, Update
+from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 from datetime import datetime
 import requests
