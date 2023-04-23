@@ -1,5 +1,5 @@
-from . import config
-from . import weather_utils
+import config
+import weather_utils
 from telegram import Update
 from telegram.ext import Application, CommandHandler
 
