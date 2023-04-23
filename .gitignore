@@ -1,2 +1,5 @@
-/Other files/
+Other files/
 /config.py
+.idea/
+build/
+docs/build
