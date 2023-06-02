@@ -3,7 +3,6 @@ import datetime
 from pprint import pprint
 import io
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from telegram import InputFile
 from aiogram.types import InputFile
 from config import tg_bot_token, open_weather_token
@@ -49,11 +48,12 @@ async def get_temperature_graph_command(message: types.Message):
         ax.grid(color='gray', linestyle='--', linewidth=0.5)
         ax.set_title(f'{city}. Температура в ближайшие 12 часов', fontsize=16)
         ax.set_xlabel('Время', fontsize=12)
-        ax.tick_params(axis='both', which='major', labelsize=10)
-        ax.set_facecolor('whitesmoke')
-        plt.xticks(rotation=35)
         ax.set_ylabel('Температура по градусу Цельсия', fontsize=12)
         ax.set_xlim([min(time_intervals), max(time_intervals)])
+        ax.set_facecolor('whitesmoke')
+        ax.tick_params(axis='both', which='major', labelsize=10)
+        plt.xticks(rotation=35)
+
         buf = io.BytesIO()
         fig.savefig(buf, format='png', dpi=300, bbox_inches='tight')
         buf.seek(0)
