@@ -36,7 +36,7 @@ async def get_temperature_graph_command(message: types.Message):
         url = requests.get(f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={open_weather_token}'
                            f'&units=metric&lang=ru')
         data = url.json()
-        # pprint(data['list'])
+        pprint(data['list'])
 
         temps = [forecast['main']['temp'] for forecast in data['list'][:12]]
         time_intervals = [datetime.datetime.strptime(forecast['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%m-%d %H:%M')
@@ -81,7 +81,7 @@ async def get_weather(message: types.Message):
             f"https://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={open_weather_token}&units"
             f"=metric&lang=ru")
         data = url.json()
-        # pprint(data)
+        pprint(data)
 
         city = data["name"]
         cur_weather = data["main"]["temp"]
