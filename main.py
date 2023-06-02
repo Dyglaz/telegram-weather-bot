@@ -33,26 +33,33 @@ async def help_command(message: types.Message):
 @dp.message_handler(commands=["get_temperature_graph"])
 async def get_temperature_graph_command(message: types.Message):
     try:
-        city = message.text.split()[1]
+        city = ' '.join(message.text.split()[1:])
         url = requests.get(f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={open_weather_token}'
-                        f'&units=metric&lang=ru')
+                           f'&units=metric&lang=ru')
         data = url.json()
-        pprint(data['list'])
-        temps = [forecast['main']['temp'] for forecast in data['list'][:12]]
+        # pprint(data['list'])
 
-        fig, ax = plt.subplots()
-        ax.plot(temps)
-        ax.grid()
-        ax.set_title(f'{city}. Температура в ближайшие 12 часов')
-        ax.set_xlabel('Время')
-        ax.set_ylabel('Температура (°C)')
-        canvas = FigureCanvas(fig)
+        temps = [forecast['main']['temp'] for forecast in data['list'][:12]]
+        time_intervals = [datetime.datetime.strptime(forecast['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%m-%d %H:%M')
+                          for forecast in data['list'][:12]]
+
+        fig, ax = plt.subplots(figsize=(8, 10))
+        ax.plot(time_intervals, temps, color='red', linewidth=2)
+        ax.legend(['Temperature'])
+        ax.grid(color='gray', linestyle='--', linewidth=0.5)
+        ax.set_title(f'{city}. Температура в ближайшие 12 часов', fontsize=16)
+        ax.set_xlabel('Время', fontsize=12)
+        ax.tick_params(axis='both', which='major', labelsize=10)
+        ax.set_facecolor('whitesmoke')
+        plt.xticks(rotation=35)
+        ax.set_ylabel('Температура по градусу Цельсия', fontsize=12)
+        ax.set_xlim([min(time_intervals), max(time_intervals)])
         buf = io.BytesIO()
-        canvas.print_png(buf)
+        fig.savefig(buf, format='png', dpi=300, bbox_inches='tight')
         buf.seek(0)
         buf.name = f"{city}_temperature.png"
 
-        await bot.send_document(message.chat.id, InputFile(buf))
+        await bot.send_photo(message.chat.id, InputFile(buf))
 
     except:
         await message.reply("\U00002620 Проверьте правильность записи названия города или страны \U00002620")
