@@ -24,7 +24,7 @@ async def start_command(message: types.Message):
 
 @dp.message_handler(commands=["help"])
 async def help_command(message: types.Message):
-    await message.reply("Для получение прогноза погоды введите название города или страны.\n"
+    await message.reply("Для получения прогноза погоды введите название города или страны.\n"
                         "/start - отобразить приветствие\n"
                         "/get_temperature_graph - получить график температуры для указанного города или страны\n")
 
@@ -36,19 +36,19 @@ async def get_temperature_graph_command(message: types.Message):
         url = requests.get(f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={open_weather_token}'
                            f'&units=metric&lang=ru')
         data = url.json()
-        pprint(data['list'])
+        pprint(data)
 
-        temps = [forecast['main']['temp'] for forecast in data['list'][:12]]
+        temps = [forecast['main']['temp'] for forecast in data['list'][:9]]
         time_intervals = [datetime.datetime.strptime(forecast['dt_txt'], '%Y-%m-%d %H:%M:%S').strftime('%m-%d %H:%M')
-                          for forecast in data['list'][:12]]
+                          for forecast in data['list'][:9]]
 
         fig, ax = plt.subplots(figsize=(8, 10))
         ax.plot(time_intervals, temps, color='red', linewidth=2)
         ax.legend(['Temperature'])
         ax.grid(color='gray', linestyle='--', linewidth=0.5)
-        ax.set_title(f'{city}. Температура в ближайшие 12 часов', fontsize=16)
+        ax.set_title(f'{city}. Температура каждые 3 часа в сутки', fontsize=16)
         ax.set_xlabel('Время', fontsize=12)
-        ax.set_ylabel('Температура по градусу Цельсия', fontsize=12)
+        ax.set_ylabel('Температура в градусах Цельсия', fontsize=12)
         ax.set_xlim([min(time_intervals), max(time_intervals)])
         ax.set_facecolor('whitesmoke')
         ax.tick_params(axis='both', which='major', labelsize=10)
